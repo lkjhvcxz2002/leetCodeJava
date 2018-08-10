@@ -1,41 +1,39 @@
 package easy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class _599 {
 
 	public static void main(String[] args) {
 		String[] list1 = new String[] {"Shogun", "KFC1", "Burger King", "KFC"};
 		String[] list2 = new String[] {"KFC", "Shogun", "Burger King"};
-		findRestaurant(list1, list2);
+		System.out.println(findRestaurant(list1, list2)[0]);
 	}
 	
 	
 	public static String[] findRestaurant(String[] list1, String[] list2) {
 		List<String> result = new ArrayList<>();
-		int minIndexSum = 2000;
+		Map<String, Integer> strMap = new HashMap<>();
+		int minIndexSum = Integer.MAX_VALUE;
 		
 		for(int i = 0; i < list1.length; i++) {
-			String curr = list1[i];
-			for(int j = 0; j < list2.length; j++) {
-				if(list2[j].equals(curr)) {
-					if(i + j < minIndexSum) {
-						result = new ArrayList<>();
-						result.add(curr);
-						minIndexSum = (i + j);
-					} else if (i + j == minIndexSum) {
-						result.add(curr);
-					}
-					break;
+			strMap.put(list1[i], i);
+		}
+		for(int i = 0; i < list2.length; i++) {
+			if(strMap.containsKey(list2[i])) {
+				if(i + strMap.get(list2[i]) < minIndexSum) {
+					result = new ArrayList<>();
+					result.add(list2[i]);
+					minIndexSum = (i + strMap.get(list2[i]));
+				} else if(i + strMap.get(list2[i]) == minIndexSum) {
+					result.add(list2[i]);
 				}
 			}
 		}
-		
-		for(String string : result) {
-			System.out.println(string);
-		}
-		
+
         return result.toArray(new String[result.size()]);
     }
 }
